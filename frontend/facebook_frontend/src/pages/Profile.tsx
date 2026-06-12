@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom"; // zorgt ervoor dat wnr je switcht tussen pages je nie heel de pag laat herladen.
-
+import DOMPurify from "dompurify";
 // Structuur van de profieldata die de backend teruggeeft
 interface ProfileData {
   username: string;
@@ -208,6 +208,7 @@ function Profile() {
               }
               placeholder="Schrijf iets over jezelf..."
             />
+
             <input
               style={styles.Input}
               value={email}
@@ -223,8 +224,13 @@ function Profile() {
           </>
         ) : (
           <>
-            <p style={styles.bio}>{profile.bio || "Geen bio yet."}</p>
-            {/* Bewerkknop alleen zichtbaar op eigen profiel */}
+            <div
+              style={styles.bio}
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(profile.bio || "Geen bio yet."),
+              }}
+            />
+
             {isOwnProfile && (
               <button style={styles.btn} onClick={() => setEditing(true)}>
                 Profiel bewerken
