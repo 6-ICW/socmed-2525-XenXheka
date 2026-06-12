@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom"; // zorgt ervoor dat wnr je switcht tussen pages je nie heel de pag laat herladen.
-import DOMPurify from "dompurify";
+import DOMPurify from "dompurify"; // module om dom elemeten te gebruiken in client side
 // Structuur van de profieldata die de backend teruggeeft
 interface ProfileData {
   username: string;
@@ -224,6 +224,12 @@ function Profile() {
           </>
         ) : (
           <>
+            {/* 
+                Bio weergeven met HTML-opmaak.
+                DOMPurify filtert gevaarlijke HTML weg (XSS-bescherming),
+                terwijl veilige tags zoals <b>, <i> en <br> blijven werken.
+              */}
+
             <div
               style={styles.bio}
               dangerouslySetInnerHTML={{

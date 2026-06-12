@@ -99,14 +99,15 @@ def update_profile(request):
     })
 @api_view(['POST'])
 def update_email(request):
-    user = request.user
+    user = request.user # user halen uit de database
 
-    new_email = request.data.get('email')
+    new_email = request.data.get('email') # de nieuwe email uit de post request halen
 
-    if new_email:
+    if new_email: # cheken of er een email is
+        #email aanpassen
         user.email = new_email
         user.save()
-
+    # response terug sturen
     return Response({
         "message": "Profile updated",
         "email": user.email

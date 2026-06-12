@@ -37,10 +37,8 @@ function Register() {
     <div style={styles.container}>
       <div style={styles.box}>
         <h2 style={styles.title}>Registreren</h2>
-
         {/* Foutmelding alleen tonen als er één is */}
         {error && <p style={styles.error}>{error}</p>}
-
         {/* Gebruikersnaam invoer */}
         <input
           style={styles.input}
@@ -50,7 +48,6 @@ function Register() {
             setUsername(e.target.value)
           }
         />
-
         {/* E-mailadres invoer */}
         <input
           style={styles.input}
@@ -60,7 +57,6 @@ function Register() {
             setEmail(e.target.value)
           }
         />
-
         {/* Wachtwoord invoer — type="password" verbergt de tekst */}
         <input
           style={styles.input}
@@ -70,7 +66,8 @@ function Register() {
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setPassword(e.target.value)
           }
-        />
+        />{" "}
+        {/*2de wachtwoord invoer om te checkn voor dubble controle */}
         <input
           style={styles.input}
           placeholder="Wachtwoord herhalen"
@@ -80,11 +77,9 @@ function Register() {
             setPassword2(e.target.value)
           }
         />
-
         <button style={styles.button} onClick={handleRegister}>
           Registreren
         </button>
-
         {/* Link naar de loginpagina voor gebruikers die al een account hebben */}
         <p>
           Al een account? <a href="/">Inloggen</a>
