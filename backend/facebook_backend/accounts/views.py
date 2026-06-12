@@ -15,6 +15,7 @@ from .models import Profile
 def register(request):
     username = request.data.get('username')
     password = request.data.get('password')
+    password2 = request.data.get('password2')
     email = request.data.get('email')
 
     # Gebruikersnaam moet uniek zijn — blokkeer duplicaten vroeg
@@ -22,9 +23,11 @@ def register(request):
         return Response({'error': 'Username already taken'}, status=400)
 
     # create_user zorgt automatisch voor het hashen van het wachtwoord
-    user = User.objects.create_user(username=username, password=password, email=email)
-    return Response({'message': 'Account created!'}, status=201)
-
+    if password2==password:
+        user = User.objects.create_user(username=username, password=password, email=email)
+        return Response({'message': 'Account created!'}, status=201)
+    else:
+        return Response({'error': 'Passwords komen niet overeen'}, status=400)
 
 # Gebruiker inloggen na verificatie van de opgegeven gegevens
 @api_view(['POST'])
@@ -93,6 +96,20 @@ def update_profile(request):
         'message': 'Profiel bijgewerkt!',
         'bio': profile.bio,
         'profile_pic': request.build_absolute_uri(profile.profile_pic.url) if profile.profile_pic else None,
+    })
+@api_view(['POST'])
+def update_email(request):
+    user = request.user
+
+    new_email = request.data.get('email')
+
+    if new_email:
+        user.email = new_email
+        user.save()
+
+    return Response({
+        "message": "Profile updated",
+        "email": user.email
     })
 
 

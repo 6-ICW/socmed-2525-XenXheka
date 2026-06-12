@@ -8,7 +8,7 @@ class Profile(models.Model):
 
     # blank=True: bio is optioneel — het veld mag leeg blijven
     bio = models.TextField(blank=True)
-
+    email=models.EmailField(blank=True)
     # upload_to bepaalt de submap binnen MEDIA_ROOT waar foto's worden opgeslagen
     # null=True: geen foto is toegestaan — de databasekolom mag NULL bevatten
     profile_pic = models.ImageField(upload_to='profile_pics/', blank=True, null=True)

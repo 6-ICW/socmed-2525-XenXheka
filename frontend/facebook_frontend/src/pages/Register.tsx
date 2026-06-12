@@ -6,6 +6,7 @@ function Register() {
   const [username, setUsername] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [password2, setPassword2] = useState<string>("");
   const [error, setError] = useState<string>("");
   const navigate = useNavigate();
 
@@ -17,7 +18,7 @@ function Register() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         // Geen credentials: "include" nodig — registreren vereist geen sessie
-        body: JSON.stringify({ username, email, password }),
+        body: JSON.stringify({ username, email, password, password2 }),
       },
     );
 
@@ -68,6 +69,15 @@ function Register() {
           value={password}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setPassword(e.target.value)
+          }
+        />
+        <input
+          style={styles.input}
+          placeholder="Wachtwoord herhalen"
+          type="password"
+          value={password2}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setPassword2(e.target.value)
           }
         />
 

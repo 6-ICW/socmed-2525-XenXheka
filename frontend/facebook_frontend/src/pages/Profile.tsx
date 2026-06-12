@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom"; // zorgt ervoor dat wnr je switcht tussen pages je nie heel de pag laat herladen.
 
 // Structuur van de profieldata die de backend teruggeeft
 interface ProfileData {
@@ -21,11 +21,12 @@ function Profile() {
 
   // Vriendschapsstatus: "none" | "pending" | "friends"
   const [friendStatus, setFriendStatus] = useState<string>("");
-  const [friendRequests, setFriendRequests] = useState<any[]>([]);
+  const [friendRequests, setFriendRequests] = useState<any[]>([]); // anu wegens alle soort namen te kunnen mee vrtienden zijn
 
   // Profieldata en bewerkingsstate
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [bio, setBio] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
   const [profilePic, setProfilePic] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null); // Lokale preview vóór opslaan
   const [editing, setEditing] = useState<boolean>(false);
@@ -61,6 +62,7 @@ function Profile() {
     );
     const data = await response.json();
     setFriendRequests(data);
+    console.log(data);
   };
 
   // Vriendenlijst van dit profiel ophalen
@@ -95,14 +97,26 @@ function Profile() {
   const handleSave = async (): Promise<void> => {
     const formData = new FormData();
     formData.append("bio", bio);
+
     if (profilePic) formData.append("profile_pic", profilePic); // Alleen meesturen als er een nieuwe foto is
 
     const response = await fetch(
       "http://localhost:8000/api/accounts/update-profile/",
       { method: "POST", credentials: "include", body: formData },
     );
+    const response2 = await fetch(
+      "http://localhost:8000/api/accounts/update_email/",
+      {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      },
+    );
 
-    if (response.ok) {
+    if (response.ok && response2.ok) {
       setMessage("Profiel opgeslagen!");
       setEditing(false);
       fetchProfile(); // Profiel herladen met de nieuwe data
@@ -194,6 +208,15 @@ function Profile() {
               }
               placeholder="Schrijf iets over jezelf..."
             />
+            <input
+              style={styles.Input}
+              value={email}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setEmail(e.target.value)
+              }
+              placeholder="Geef nieuwe email"
+            />
+
             <button style={styles.btn} onClick={handleSave}>
               Opslaan
             </button>

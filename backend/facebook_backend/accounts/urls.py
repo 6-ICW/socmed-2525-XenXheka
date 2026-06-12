@@ -9,4 +9,5 @@ urlpatterns = [
     path('update-profile/', views.update_profile),  # POST — bio en/of profielfoto opslaan
     path('profile/<str:username>/', views.get_profile),  # GET — profiel ophalen via gebruikersnaam
     path('search/', views.search_users),            # GET — gebruikers zoeken op naam (?q=...)
+    path('update_email/', views.update_email),            # GET — gebruikers zoeken op naam (?q=...)
 ]

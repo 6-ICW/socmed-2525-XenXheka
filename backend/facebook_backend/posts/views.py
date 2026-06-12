@@ -96,7 +96,7 @@ def get_comments(request, post_id):
         {
             'id': comment.id,
             'username': comment.user.username,
-            'content': comment.content,
+            'content': comment.text,
             'created_at': comment.created_at.strftime('%d/%m/%Y %H:%M'),
         }
         for comment in comments
@@ -119,10 +119,10 @@ def create_comment(request, post_id):
     if not content:
         return JsonResponse({'error': 'Comment mag niet leeg zijn'}, status=400)
 
-    comment = Comment.objects.create(user=request.user, post=post, content=content)
+    comment = Comment.objects.create(user=request.user, post=post, text=content)
     return JsonResponse({
         'id': comment.id,
         'username': comment.user.username,
-        'content': comment.content,
+        'content': comment.text,
         'created_at': comment.created_at.strftime('%d/%m/%Y %H:%M'),
     }, status=201)
